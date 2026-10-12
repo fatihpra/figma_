@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LittleSeed Plants</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #e9ece7;
+            color: #252a25;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .phone {
+            width: 390px;
+            min-height: 844px;
+            margin: 25px auto;
+            background: white;
+            border-radius: 35px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,.15);
+        }
+
+        .page {
+            min-height: 844px;
+            padding: 25px 20px;
+            display: none;
+        }
+
+        .page:target {
+            display: block;
+        }
+
+        body:not(:has(.page:target)) #home {
+            display: block;
+        }
+
+        header,
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 4px 0;
+            font-size: 22px;
+        }
+
+        small {
+            color: #737970;
+        }
+
+        .profile {
+            background: #eef1ed;
+            padding: 12px;
+            border-radius: 50%;
+        }
+
+        .back {
+            background: #eef1ed;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 25px;
+        }
+
+        .top h2 {
+            margin: 0;
+            font-size: 19px;
+        }
+
+        .search {
+            background: #f0f2ef;
+            padding: 14px;
+            border-radius: 14px;
+            color: #737970;
+            margin-bottom: 15px;
+        }
+
+        .categories,
+        .filter {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin-bottom: 18px;
+        }
+
+        .categories a,
+        .filter span {
+            background: #eef1ed;
+            padding: 9px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+            font-size: 13px;
+        }
+
+        .categories .active,
+        .filter .selected {
+            background: #333a34;
+            color: white;
+        }
+
+        .hero {
+            background: #e3ebe1;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hero h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .plant {
+            font-size: 65px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #343b35;
+            color: white;
+            padding: 13px 17px;
+            border-radius: 13px;
+            font-weight: bold;
+        }
+
+        .full {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin: 23px 0 12px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .feature-card {
+            background: #f4f6f3;
+            padding: 14px;
+            border-radius: 16px;
+        }
+
+        .feature-icon {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .feature-card h3 {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .feature-card p {
+            font-size: 11px;
+            color: #737970;
+        }
+
+        .plants {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .plant-card {
+            background: #f4f6f3;
+            padding: 11px;
+            border-radius: 16px;
+        }
+
+        .plant-image {
+            height: 120px;
+            background: #e6ebe4;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 65px;
+        }
+
+        .plant-card h3 {
+            font-size: 14px;
+            margin: 10px 0 5px;
+        }
+
+        .plant-card b {
+            font-size: 13px;
+        }
+
+        .detail-image {
+            height: 270px;
+            background: #e6ebe4;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 140px;
+        }
+
+        .page > h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .plant-info {
+            display: flex;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .plant-info div {
+            flex: 1;
+            background: #f0f2ef;
+            padding: 12px 5px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .plant-info strong {
+            display: block;
+            margin: 5px 0;
+        }
+
+        .progress {
+            height: 7px;
+            background: #e4e7e2;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .progress div {
+            width: 33%;
+            height: 100%;
+            background: #343b35;
+            border-radius: 10px;
+        }
+
+        .option {
+            display: block;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 13px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            border-color: #343b35;
+            background: #f1f4ef;
+        }
+
+        .option input {
+            margin-right: 10px;
+        }
+
+        .result {
+            text-align: center;
+            margin: 35px 0;
+        }
+
+        .big-plant {
+            font-size: 90px;
+        }
+
+        .result h1 {
+            font-size: 23px;
+        }
+
+        .result p {
+            color: #737970;
+        }
+
+        .doctor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .doctor-grid a {
+            background: #f3f5f2;
+            padding: 25px 10px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 45px;
+        }
+
+        .doctor-grid strong {
+            display: block;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .diagnosis-image {
+            height: 180px;
+            background: #e6ebe4;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 90px;
+        }
+
+        .diagnosis-card {
+            background: #f3f5f2;
+            border-radius: 14px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .diagnosis-card p {
+            font-size: 13px;
+            color: #737970;
+        }
+
+        .reminder-card {
+            background: #e9eee7;
+            padding: 18px;
+            border-radius: 17px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .reminder-card span {
+            font-size: 45px;
+        }
+
+        .reminder-card h3 {
+            margin: 0 0 5px;
+        }
+
+        .task {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 17px;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            margin: 10px 0;
+            font-size: 22px;
+        }
+
+        .task div {
+            font-size: 14px;
+        }
+
+        .task small {
+            display: block;
+            margin-top: 4px;
+        }
+
+        .journey-head {
+            text-align: center;
+            background: #f1f4ef;
+            padding: 20px;
+            border-radius: 18px;
+        }
+
+        .journey-head div {
+            font-size: 80px;
+        }
+
+        .journey-head h2 {
+            margin: 5px;
+        }
+
+        .timeline {
+            border-left: 2px solid #cdd2cb;
+            margin: 30px 0 0 10px;
+            padding-left: 22px;
+        }
+
+        .timeline div {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline div::before {
+            content: "";
+            width: 11px;
+            height: 11px;
+            background: #343b35;
+            border-radius: 50%;
+            position: absolute;
+            left: -29px;
+            top: 3px;
+        }
+
+        .timeline p {
+            color: #737970;
+        }
+
+        @media (max-width: 450px) {
+            .phone {
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .page {
+                min-height: 100vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="phone">
+
+    <!-- HOME -->
+    <section id="home" class="page">
+
+        <header>
+            <div>
+                <small>Halo 👋</small>
+                <h1>Selamat Datang!</h1>
+            </div>
+
+            <div class="profile">○</div>
+        </header>
+
+        <div class="search">
+            🔍 Cari tanaman, tips, atau masalah...
+        </div>
+
+        <div class="categories">
+            <a href="#home" class="active">Semua</a>
+            <a href="#category">Indoor</a>
+            <a href="#category">Outdoor</a>
+            <a href="#category">Pemula</a>
+        </div>
+
+        <div class="hero">
+            <div>
+                <h2>
+                    Temukan tanaman<br>
+                    yang sesuai denganmu
+                </h2>
+
+                <a href="#match" class="button">
+                    Plant Match
+                </a>
+            </div>
+
+            <div class="plant">🪴</div>
+        </div>
+
+        <h2 class="section-title">
+            Fitur Utama
+        </h2>
+
+        <div class="features">
+
+            <a href="#match" class="feature-card">
+                <div class="feature-icon">🌿</div>
+                <h3>Plant Match</h3>
+                <p>Cari tanaman yang cocok untukmu</p>
+            </a>
+
+            <a href="#doctor" class="feature-card">
+                <div class="feature-icon">🩺</div>
+                <h3>Plant Doctor</h3>
+                <p>Temukan solusi masalah tanaman</p>
+            </a>
+
+            <a href="#reminder" class="feature-card">
+                <div class="feature-icon">⏰</div>
+                <h3>Care Reminder</h3>
+                <p>Atur jadwal perawatan tanaman</p>
+            </a>
+
+            <a href="#journey" class="feature-card">
+                <div class="feature-icon">📷</div>
+                <h3>Plant Journey</h3>
+                <p>Pantau perkembangan tanaman</p>
+            </a>
+
+        </div>
+
+        <h2 class="section-title">
+            Rekomendasi Untukmu
+        </h2>
+
+        <div class="plants">
+
+            <a href="#detail" class="plant-card">
+                <div class="plant-image">🌱</div>
+                <h3>Pothos</h3>
+                <b>Rp75.000</b>
+            </a>
+
+            <a href="#detail" class="plant-card">
+                <div class="plant-image">🪴</div>
+                <h3>Monstera</h3>
+                <b>Rp125.000</b>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- CATEGORY -->
+    <section id="category" class="page">
+
+        <div class="top">
+            <a href="#home" class="back">‹</a>
+            <h2>Tanaman Indoor</h2>
+            <span></span>
+        </div>
+
+        <div class="search">
+            🔍 Cari tanaman...
+        </div>
+
+        <div class="filter">
+            <span class="selected">Populer</span>
+            <span>Harga</span>
+            <span>Ukuran</span>
+            <span>Cahaya</span>
+        </div>
+
+        <div class="plants">
+
+            <a href="#detail" class="plant-card">
+                <div class="plant-image">🪴</div>
+                <h3>Monstera</h3>
+                <b>Rp125.000</b>
+            </a>
+
+            <a href="#detail" class="plant-card">
+                <div class="plant-image">🌱</div>
+                <h3>Pothos</h3>
+                <b>Rp75.000</b>
+            </a>
+
+            <a href="#detail" class="plant-card">
+                <div class="plant-image">🌿</div>
+                <h3>Calathea</h3>
+                <b>Rp90.000</b>
+            </a>
+
+            <a href="#detail" class="plant-card">
+                <div class="plant-image">🌵</div>
+                <h3>Lidah Mertua</h3>
+                <b>Rp60.000</b>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- DETAIL -->
+    <section id="detail" class="page">
+
+        <div class="top">
+            <a href="#category" class="back">‹</a>
+            <h2>Detail Tanaman</h2>
+            <span>♡</span>
+        </div>
+
+        <div class="detail-image">
+            🪴
+        </div>
+
+        <h1>Monstera Deliciosa</h1>
+
+        <h2>Rp125.000</h2>
+
+        <p>⭐ 4.8 (120 ulasan)</p>
+
+        <div class="plant-info">
+
+            <div>
+                ☀️
+                <strong>Cahaya</strong>
+                Terang
+            </div>
+
+            <div>
+                💧
+                <strong>Siram</strong>
+                1-2x/minggu
+            </div>
+
+            <div>
+                🏠
+                <strong>Lokasi</strong>
+                Indoor
+            </div>
+
+        </div>
+
+        <h2>Deskripsi</h2>
+
+        <p>
+            Monstera Deliciosa merupakan tanaman hias
+            dengan bentuk daun unik yang cocok untuk
+            dekorasi ruangan dan cukup mudah dirawat.
+        </p>
+
+        <a href="#home" class="button full">
+            Tambah ke Keranjang
+        </a>
+
+    </section>
+
+
+    <!-- PLANT MATCH -->
+    <section id="match" class="page">
+
+        <div class="top">
+            <a href="#home" class="back">‹</a>
+            <h2>Plant Match</h2>
+            <span>1/3</span>
+        </div>
+
+        <div class="progress">
+            <div></div>
+        </div>
+
+        <h1>
+            Seperti apa kondisi ruanganmu?
+        </h1>
+
+        <p>
+            Jawab beberapa pertanyaan untuk menemukan
+            tanaman yang paling cocok.
+        </p>
+
+        <label class="option">
+            <input type="radio" name="light">
+            Banyak cahaya alami
+        </label>
+
+        <label class="option">
+            <input type="radio" name="light">
+            Cahaya sedang
+        </label>
+
+        <label class="option">
+            <input type="radio" name="light">
+            Minim cahaya
+        </label>
+
+        <label class="option">
+            <input type="radio" name="light">
+            Jarang ada cahaya
+        </label>
+
+        <a href="#match-result" class="button full">
+            Selanjutnya
+        </a>
+
+    </section>
+
+
+    <!-- HASIL MATCH -->
+    <section id="match-result" class="page">
+
+        <div class="top">
+            <a href="#match" class="back">‹</a>
+            <h2>Hasil Rekomendasi</h2>
+            <span></span>
+        </div>
+
+        <div class="result">
+
+            <div class="big-plant">
+                🌱
+            </div>
+
+            <h1>
+                Tanaman yang cocok untukmu!
+            </h1>
+
+            <p>
+                Berdasarkan kondisi ruanganmu,
+                berikut tanaman yang direkomendasikan.
+            </p>
+
+        </div>
+
+        <div class="plants">
+
+            <div class="plant-card">
+                <div class="plant-image">
+                    🌱
+                </div>
+
+                <h3>Pothos</h3>
+
+                <b>Cocok 95%</b>
+            </div>
+
+            <div class="plant-card">
+                <div class="plant-image">
+                    🌵
+                </div>
+
+                <h3>Lidah Mertua</h3>
+
+                <b>Cocok 90%</b>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PLANT DOCTOR -->
+    <section id="doctor" class="page">
+
+        <div class="top">
+            <a href="#home" class="back">‹</a>
+            <h2>Plant Doctor</h2>
+            <span></span>
+        </div>
+
+        <div class="search">
+            🔍 Cari masalah tanaman...
+        </div>
+
+        <h2>
+            Pilih masalah tanamanmu
+        </h2>
+
+        <div class="doctor-grid">
+
+            <a href="#diagnosis">
+                🍂
+                <strong>Daun Menguning</strong>
+            </a>
+
+            <a href="#diagnosis">
+                🥀
+                <strong>Daun Layu</strong>
+            </a>
+
+            <a href="#diagnosis">
+                🍃
+                <strong>Bercak Daun</strong>
+            </a>
+
+            <a href="#diagnosis">
+                🐛
+                <strong>Hama</strong>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- DIAGNOSIS -->
+    <section id="diagnosis" class="page">
+
+        <div class="top">
+            <a href="#doctor" class="back">‹</a>
+            <h2>Hasil Diagnosis</h2>
+            <span></span>
+        </div>
+
+        <div class="diagnosis-image">
+            🍂
+        </div>
+
+        <h2>
+            Kemungkinan Penyebab
+        </h2>
+
+        <div class="diagnosis-card">
+            ☀️
+            <strong>Kekurangan Cahaya</strong>
+
+            <p>
+                Tanaman tidak mendapatkan cahaya
+                yang cukup.
+            </p>
+        </div>
+
+        <div class="diagnosis-card">
+            💧
+            <strong>Penyiraman Berlebihan</strong>
+
+            <p>
+                Media tanaman terlalu lembap.
+            </p>
+        </div>
+
+        <h2>
+            Solusi
+        </h2>
+
+        <div class="diagnosis-card">
+
+            ✓ Letakkan tanaman di tempat
+            dengan cahaya tidak langsung.
+
+            <br><br>
+
+            ✓ Kurangi frekuensi penyiraman.
+
+            <br><br>
+
+            ✓ Pastikan media memiliki
+            drainase yang baik.
+
+        </div>
+
+    </section>
+
+
+    <!-- REMINDER -->
+    <section id="reminder" class="page">
+
+        <div class="top">
+            <a href="#home" class="back">‹</a>
+            <h2>Perawatan</h2>
+            <span></span>
+        </div>
+
+        <div class="reminder-card">
+
+            <span>🪴</span>
+
+            <div>
+                <h3>
+                    Monstera Deliciosa
+                </h3>
+
+                <small>
+                    Indoor
+                </small>
+            </div>
+
+        </div>
+
+        <div class="task">
+
+            💧
+
+            <div>
+                <strong>
+                    Penyiraman
+                </strong>
+
+                <small>
+                    Setiap 3 hari
+                </small>
+            </div>
+
+        </div>
+
+        <div class="task">
+
+            🌱
+
+            <div>
+                <strong>
+                    Pemupukan
+                </strong>
+
+                <small>
+                    Setiap 1 bulan
+                </small>
+            </div>
+
+        </div>
+
+        <div class="task">
+
+            🪴
+
+            <div>
+                <strong>
+                    Ganti Media
+                </strong>
+
+                <small>
+                    Setiap 6 bulan
+                </small>
+            </div>
+
+        </div>
+
+        <a href="#reminder" class="button full">
+            + Tambah Pengingat
+        </a>
+
+    </section>
+
+
+    <!-- PLANT JOURNEY -->
+    <section id="journey" class="page">
+
+        <div class="top">
+            <a href="#home" class="back">‹</a>
+            <h2>Plant Journey</h2>
+            <span></span>
+        </div>
+
+        <div class="journey-head">
+
+            <div>
+                🪴
+            </div>
+
+            <h2>
+                Monstera Deliciosa
+            </h2>
+
+            <p>
+                Sejak 1 Januari 2025
+            </p>
+
+        </div>
+
+        <a href="#journey" class="button full">
+            + Tambah Foto
+        </a>
+
+        <div class="timeline">
+
+            <div>
+                <strong>
+                    1 Januari 2025
+                </strong>
+
+                <p>
+                    Mulai menanam 🌱
+                </p>
+            </div>
+
+            <div>
+                <strong>
+                    15 Januari 2025
+                </strong>
+
+                <p>
+                    Tumbuh daun baru 🌿
+                </p>
+            </div>
+
+            <div>
+                <strong>
+                    1 Februari 2025
+                </strong>
+
+                <p>
+                    Tanaman semakin sehat 🪴
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>
